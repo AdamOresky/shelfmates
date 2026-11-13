@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: shelfmates-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: shelfmates
+      POSTGRES_USER: shelfmates
+      POSTGRES_PASSWORD: shelfmates
+    ports:
+      - "5433:5432"
+    volumes:
+      - shelfmates-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shelfmates -d shelfmates"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  shelfmates-pgdata:
